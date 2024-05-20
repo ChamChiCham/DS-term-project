@@ -8,5 +8,5 @@ struct School
 {
 	std::string data[MAX_SIZE];
 
-	std::string& operator[](size_t idx);
+	void show() const;
 };

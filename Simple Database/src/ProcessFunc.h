@@ -5,7 +5,7 @@
 #include <fstream>
 
 template <class T>
-void read_file(T DB)
+void read_file(T& DB)
 {
 	std::ifstream file{ FILE_NAME };
 	if (not file) {
@@ -21,7 +21,7 @@ void read_file(T DB)
 		School new_school;
 		for (int i{}; i < MAX_SIZE; ++i) {
 			if (!std::getline(ss, data, ',')) break;
-			new_school[i] = data;
+			new_school.data[i] = data;
 		}
 
 		DB.push(new_school);

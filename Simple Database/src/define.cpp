@@ -1,6 +1,10 @@
+#include <print>
+
 #include "define.h"
 
-std::string& School::operator[](size_t idx)
+void School::show() const
 {
-	return data[idx];
+	for (const auto& a : data) {
+		std::println("{}", a);
+	}
 }
