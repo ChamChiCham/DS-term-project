@@ -10,3 +10,10 @@ struct School
 
 	void show() const;
 };
+
+struct Node {
+	School school;
+	Node* next;
+
+	Node(const School& school) : school(school), next(nullptr) {}
+};

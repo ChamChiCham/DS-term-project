@@ -24,7 +24,8 @@ void read_file(T& DB)
 			new_school.data[i] = data;
 		}
 
-		DB.push(new_school);
+		//DB.pqueue_push(new_school);
+		DB.linkedList_push(new_school);
 	}
 	std::println("¿¢¼¿ ÆÄÀÏ ÀÐ±â ¿Ï·á.");
 }
