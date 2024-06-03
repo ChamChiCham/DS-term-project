@@ -1,12 +1,34 @@
 #pragma once
 #include <string>
+#include <initializer_list>
 
-constexpr int MAX_SIZE{ 16 };
+constexpr int SCHOOL_SIZE{ 16 };
 constexpr const char* FILE_NAME{ "data.csv" };
+
+constexpr const char* SCHOOL_TYPE[SCHOOL_SIZE]{
+	"학교구분",
+	"학교코드",
+	"학교명",
+	"본분교",
+	"학제",
+	"지역",
+	"설립구분",
+	"학교상태",
+	"학교명",
+	"주소",
+	"우편번호",
+	"학교개교일",
+	"학교홈페이지",
+	"총장명",
+	"학교대표번호",
+	"학교팩스번호"
+};
+
+
 
 struct School
 {
-	std::string data[MAX_SIZE];
+	std::string data[SCHOOL_SIZE];
 
 	void show() const;
 };
@@ -17,3 +39,4 @@ struct Node {
 
 	Node(const School& school) : school(school), next(nullptr) {}
 };
+
