@@ -30,34 +30,43 @@ void delete_linkedList() {
     std::cout << name << " 학교가 삭제되었습니다.\n";
 }
 
+
 int main()
 {
-    int menu_choice;
     read_file(listDB);
+  
+    while (true) {
+        process_input(listDB);        
+    }
 
-    do {
-        std::cout << "\n연결리스트를 이용한 기능\n";
-        std::cout << "1. 검색 기능\n2. 삭제 기능\n3. 데이터 전체 출력 기능\n4. 종료\n";
-        std::cout << "선택: ";
-        std::cin >> menu_choice;
-        std::cin.ignore(); // 개행문자 제거
+    // int menu_choice;
+    //do {
+    //    std::cout << "\n연결리스트를 이용한 기능\n";
+    //    std::cout << "1. 검색 기능\n2. 삭제 기능\n3. 데이터 전체 출력 기능\n4. 종료\n";
+    //    std::cout << "선택: ";
+    //    std::cin >> menu_choice;
+    //    std::cin.ignore(); // 개행문자 제거
 
-        switch (menu_choice) {
-        case 1:
-            search_linkedList();
-            break;
-        case 2:
-            delete_linkedList();
-            break;
-        case 3:
-            showAll_linkedList();
-            break;
-        case 4:
-            std::cout << "프로그램을 종료합니다.\n";
-            break;
-        default:
-            std::cout << "잘못된 입력입니다. 다시 선택하세요.\n";
-        }
-    } while (menu_choice != 4);
-    return 0;
+    //    switch (menu_choice) {
+    //    case 1:
+    //        search_linkedList();
+    //        break;
+    //    case 2:
+    //        delete_linkedList();
+    //        break;
+    //    case 3:
+    //        showAll_linkedList();
+    //        break;
+    //    case 4:
+    //        std::cout << "프로그램을 종료합니다.\n";
+    //        break;
+    //    default:
+    //        std::cout << "잘못된 입력입니다. 다시 선택하세요.\n";
+    //    }
+    //} while (menu_choice != 4);
+    //return 0;
+
+
+
+
 }
