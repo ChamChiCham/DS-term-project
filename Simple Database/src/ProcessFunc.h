@@ -1,5 +1,6 @@
 #pragma once
 #include <print>
+#include <format>
 #include <string>
 #include <sstream>
 #include <fstream>
@@ -30,77 +31,127 @@ void read_file(DB& db)
 }
 
 // 
-// SELECT key=value 
+// SELECT key = value 
 //
 template <class DB>
-void _Process_SELECT(DB& db, std::string& arg)
+void _Process_SELECT(DB& db)
 {
-	if (not arg.contains('=')) {
-		std::println("{}: 잘못된 명령어입니다.", arg);
-		return;
+	std::string _line;
+	std::getline(std::cin, _line);
+	std::istringstream _iss{ _line };
+	std::string _str[3];
+	for (int i{}; i < 3; ++i) {
+		if (!(_iss >> _str[i])) {
+			throw std::format("{}: 인자가 부족합니다.", _line);
+		}
 	}
 
-	auto eq		{ arg.find("=") };
-	auto key	{ arg.substr(0, eq) };
-	auto value	{ arg.substr(eq + 1, arg.size()) };
+	if ("=" != _str[1]) {
+		throw std::format("{}: 잘못된 입력입니다.", _line);
+	}
+
+	std::string& key = _str[0];
+	std::string& value = _str[2];
+
 
 	for (const auto& type : SCHOOL_TYPE) {
-		if (key == type) {
-			// TODO: 여기에 출력 함수를 추가합니다.
+		if (type == key) {
+			// TODO: 여기에 SELECT 함수를 추가합니다.
 
 
 			// 임시 출력
-			std::println("{}: key 발견", arg);
+			std::println("key 발견");
 			return;
 		}
 	}
-	std::println("{}: 일치하는 key가 없습니다.", arg);
+	throw std::format("{}: key가 발견되지 않았습니다.", key);
 }
 
 //
-// INSERT 새객체 (아직 미구현)
+// INSERT k1 k2 k3.. VALUES v1 v2 v3...
 //
 template <class DB>
-void _Process_INSERT(DB& db, std::string& arg)
+void _Process_INSERT(DB& db)
 {
-
+	
 }
 
 //
-// UPDATE key=value WHERE key=value (아직 미구현)
+// UPDATE key = value WHERE key = value
 //
 template <class DB>
-void _Process_UPDATE(DB& db, std::string& arg)
+void _Process_UPDATE(DB& db)
 {
-
-}
-
-//
-// DELETE key=value
-//
-template <class DB>
-void _Process_DELETE(DB& db, const std::string& arg)
-{
-	if (not arg.contains('=')) {
-		std::println("{}: 잘못된 명령어입니다.", arg);
-		return;
+	std::string _line;
+	std::getline(std::cin, _line);
+	std::istringstream _iss{ _line };
+	std::string _str[7];
+	for (int i{}; i < 7; ++i) {
+		if (!(_iss >> _str[i])) {
+			throw std::format("{}: 인자가 부족합니다.", _line);
+		}
 	}
 
-	auto eq		{ arg.find("=") };
-	auto key	{ arg.substr(0, eq) };
-	auto value	{ arg.substr(eq + 1, arg.size()) };
+	if ("=" != _str[1] || "WHERE" != _str[3] || "=" != _str[5]) {
+		throw std::format("{}: 잘못된 입력입니다.", _line);
+	}
+
+	std::string& targ_key = _str[0];
+	std::string& targ_value = _str[2];
+
+	std::string& where_key = _str[4];
+	std::string& where_value = _str[6];
 
 	for (const auto& type : SCHOOL_TYPE) {
-		if (key == type) {
+		if (type == where_key) {
 			// TODO: 여기에 삭제 함수를 추가합니다.
 
 
 			// 임시 출력
-			std::println("{}: key 발견", arg);
+			std::println("where_key 발견");
 			return;
 		}
 	}
-	std::println("{}: 일치하는 key가 없습니다.", arg);
+	throw std::format("{}: 찾으려는 key가 발견되지 않았습니다.", where_key);
+
+
+}
+
+//
+// DELETE key = value
+//
+template <class DB>
+void _Process_DELETE(DB& db)
+{
+	std::string _line;
+	std::getline(std::cin, _line);
+	std::istringstream _iss{ _line };
+	std::string _str[3];
+	for (int i{}; i < 3; ++i) {
+		if (!(_iss >> _str[i])) {
+			throw std::format("{}: 인자가 부족합니다.", _line);
+		}
+	}
+
+	if ("=" != _str[1]) {
+		throw std::format("{}: 잘못된 입력입니다.", _line);
+	}
+
+	std::string& key = _str[0];
+	std::string& value = _str[2];
+
+	
+	for (const auto& type : SCHOOL_TYPE) {
+		if (type == key) {
+			// TODO: 여기에 삭제 함수를 추가합니다.
+
+
+			// 임시 출력
+			std::println("key 발견");
+			return;
+		}
+	}
+	throw std::format("{}: key가 발견되지 않았습니다.", key);
 }
 
 
@@ -109,18 +160,24 @@ void process_input(DB& db)
 {
 	std::string in;
 
-	std::print("명령어 >> ");
-	std::getline(std::cin, in);
+	std::print(">> ");
+	std::cin >> in;
 
-	auto space	{ in.find(" ") };
-	auto cmd	{ in.substr(0, space) };
-	auto arg	{ in.substr(space + 1, in.size()) };
-
-	if		(cmd == "SELECT")	{ _Process_SELECT(db, arg); }
-	else if (cmd == "INSERT")	{ _Process_INSERT(db, arg); }
-	else if (cmd == "UPDATE")	{ _Process_UPDATE(db, arg); }
-	else if (cmd == "DELETE")	{ _Process_DELETE(db, arg); }
-	else						{ std::println("{}: 잘못된 명령어입니다.", cmd); }
-
+	try
+	{
+		if		(in == "SELECT") { _Process_SELECT(db); }
+		else if (in == "INSERT") { _Process_INSERT(db); }
+		else if (in == "UPDATE") { _Process_UPDATE(db); }
+		else if (in == "DELETE") { _Process_DELETE(db); }
+		else {
+			std::println("{}: 잘못된 명령어입니다.", in);
+			std::cin.clear();
+			std::cin.ignore(1000, '\n');
+		}
+	}
+	catch (const std::string& e)
+	{
+		std::cerr << e << std::endl;
+	}
 	std::cout << std::endl;
 }
