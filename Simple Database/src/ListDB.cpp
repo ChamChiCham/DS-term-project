@@ -73,3 +73,15 @@ void ListDB::linkedList_remove(std::string_view key) {
         current = current->next;
     }
 }
+
+void ListDB::linkedList_update(std::string_view key, const School& newSchool) {
+	Node* current = head;
+	while (current != nullptr) {
+		if (current->school.data[2] == key) {
+			current->school = newSchool;
+			return;
+		}
+		current = current->next;
+	}
+	throw std::runtime_error("학교를 찾을 수 없습니다.");
+}

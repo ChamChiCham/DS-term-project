@@ -57,23 +57,50 @@ void _Process_SELECT(DB& db)
 	for (const auto& type : SCHOOL_TYPE) {
 		if (type == key) {
 			// TODO: 여기에 SELECT 함수를 추가합니다.
-
+			try {
+				const School& school = db.linkedList_find(value);
+				school.show();
+			}
+			catch (const std::exception& e) {
+				std::cerr << e.what() << std::endl;
+			}
+			return;
 
 			// 임시 출력
-			std::println("key 발견");
-			return;
+			//std::println("key 발견");
+			//return;
 		}
 	}
 	throw std::format("{}: key가 발견되지 않았습니다.", key);
 }
 
 //
-// INSERT k1 k2 k3.. VALUES v1 v2 v3...
+// INSERT k1 k2 k3.. VALUES v1 v2 v3... 16개 전부 다 값을 입력
 //
 template <class DB>
 void _Process_INSERT(DB& db)
 {
-	
+	std::string _line;
+	std::getline(std::cin, _line);
+	std::istringstream _iss{ _line };
+
+	std::string token;
+	std::vector<std::string> tokens;
+	while (_iss >> token) {
+		tokens.push_back(token);
+	}
+
+	if (tokens.size() < SCHOOL_SIZE + 1 || tokens[tokens.size() - SCHOOL_SIZE - 1] != "VALUES") {
+		throw std::format("{}: INSERT 문법이 잘못되었습니다.", _line);
+	}
+
+	School new_school;
+	for (int i = 0; i < SCHOOL_SIZE; ++i) {
+		new_school.data[i] = tokens[tokens.size() - SCHOOL_SIZE + i];
+	}
+
+	db.linkedList_push(new_school);
+	std::cout << "새 학교가 추가되었습니다." << std::endl;
 }
 
 //
@@ -104,12 +131,26 @@ void _Process_UPDATE(DB& db)
 
 	for (const auto& type : SCHOOL_TYPE) {
 		if (type == where_key) {
-			// TODO: 여기에 삭제 함수를 추가합니다.
-
+			// TODO: 여기에 업데이트 함수를 추가합니다.
+			try {
+				School new_school = db.linkedList_find(where_value);
+				for (int i = 0; i < SCHOOL_SIZE; ++i) {
+					if (SCHOOL_TYPE[i] == targ_key) {
+						new_school.data[i] = targ_value;
+						db.linkedList_update(where_value, new_school);
+						std::cout << "학교 정보가 업데이트되었습니다." << std::endl;
+						return;
+					}
+				}
+			}
+			catch (const std::exception& e) {
+				std::cerr << e.what() << std::endl;
+			}
+			return;
 
 			// 임시 출력
-			std::println("where_key 발견");
-			return;
+			//std::println("where_key 발견");
+			//return;
 		}
 	}
 	throw std::format("{}: 찾으려는 key가 발견되지 않았습니다.", where_key);
@@ -144,11 +185,17 @@ void _Process_DELETE(DB& db)
 	for (const auto& type : SCHOOL_TYPE) {
 		if (type == key) {
 			// TODO: 여기에 삭제 함수를 추가합니다.
-
-
-			// 임시 출력
-			std::println("key 발견");
+			try {
+				db.linkedList_remove(value);
+				std::cout << "학교가 삭제되었습니다." << std::endl;
+			}
+			catch (const std::exception& e) {
+				std::cerr << e.what() << std::endl;
+			}
 			return;
+			// 임시 출력
+			//std::println("key 발견");
+			//return;
 		}
 	}
 	throw std::format("{}: key가 발견되지 않았습니다.", key);

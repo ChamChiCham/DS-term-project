@@ -22,6 +22,7 @@ public:
 	const School& linkedList_find(std::string_view) const;
 	void linkedList_show() const;
 	void linkedList_remove(std::string_view key);
+	void linkedList_update(std::string_view key, const School& newSchool);
 };
 
 
