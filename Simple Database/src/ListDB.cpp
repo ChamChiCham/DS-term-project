@@ -60,24 +60,41 @@ void ListDB::linkedList_remove(std::string_view key) {
     Node* current = head;
     Node* prev = nullptr;
     while (current != nullptr) {
-        if (current->school.data[2] == key) {
+        bool match = false;
+        for (int i = 0; i < 16; i++) {
+            if (current->school.data[i] == key) {
+                match = true;
+                break;
+            }
+        }
+        if (match) {
+			Node* temp = current;
             if (prev == nullptr) {
                 head = current->next;
             } else {
                 prev->next = current->next;
             }
-            delete current;
-            return;
-        }
-        prev = current;
-        current = current->next;
+            current = current->next;
+            delete temp;
+		}
+		else {
+			prev = current;
+			current = current->next;
+		}
     }
 }
 
 void ListDB::linkedList_update(std::string_view key, const School& newSchool) {
 	Node* current = head;
 	while (current != nullptr) {
-		if (current->school.data[2] == key) {
+		bool match = false;
+		for (int i = 0; i < 16; i++) {
+			if (current->school.data[i] == key) {
+				match = true;
+				break;
+			}
+		}
+		if (match) {
 			current->school = newSchool;
 			return;
 		}
