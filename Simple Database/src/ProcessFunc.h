@@ -5,6 +5,8 @@
 #include <sstream>
 #include <fstream>
 
+#include "timer.h"
+
 template <class DB>
 void read_file(DB& db)
 {
@@ -36,6 +38,7 @@ void read_file(DB& db)
 template <class DB>
 void _Process_SELECT(DB& db)
 {
+	Timer timer;
 	std::string _line;
 	std::getline(std::cin, _line);
 	std::istringstream _iss{ _line };
@@ -66,6 +69,7 @@ void _Process_SELECT(DB& db)
 			catch (const std::exception& e) {
 				std::cerr << e.what() << std::endl;
 			}
+			std::cout << "SELECT 실행 시간: " << timer.elapsed() << "초" << std::endl;
 			return;
 
 			// 임시 출력
@@ -82,6 +86,7 @@ void _Process_SELECT(DB& db)
 template <class DB>
 void _Process_INSERT(DB& db)
 {
+	Timer timer;
 	std::string _line;
 	std::getline(std::cin, _line);
 	std::istringstream _iss{ _line };
@@ -103,6 +108,7 @@ void _Process_INSERT(DB& db)
 
 	db.linkedList_push(new_school);
 	std::cout << "새 학교가 추가되었습니다." << std::endl;
+	std::cout << "INSERT 실행 시간: " << timer.elapsed() << "초" << std::endl;
 }
 
 //
@@ -111,6 +117,7 @@ void _Process_INSERT(DB& db)
 template <class DB>
 void _Process_UPDATE(DB& db)
 {
+	Timer timer;
 	std::string _line;
 	std::getline(std::cin, _line);
 	std::istringstream _iss{ _line };
@@ -145,6 +152,7 @@ void _Process_UPDATE(DB& db)
 					db.linkedList_update(where_value, school);
 				}
 				std::cout << "학교 정보가 업데이트되었습니다." << std::endl;
+				std::cout << "UPDATE 실행 시간: " << timer.elapsed() << "초" << std::endl;
 				return;
 			}
 			catch (const std::exception& e) {
@@ -166,6 +174,7 @@ void _Process_UPDATE(DB& db)
 template <class DB>
 void _Process_DELETE(DB& db)
 {
+	Timer timer;
 	std::string _line;
 	std::getline(std::cin, _line);
 	std::istringstream _iss{ _line };
@@ -190,6 +199,7 @@ void _Process_DELETE(DB& db)
 			try {
 				db.linkedList_remove(value);
 				std::cout << "학교가 삭제되었습니다." << std::endl;
+				std::cout << "DELETE 실행 시간: " << timer.elapsed() << "초" << std::endl;
 			}
 			catch (const std::exception& e) {
 				std::cerr << e.what() << std::endl;
