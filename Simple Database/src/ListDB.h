@@ -19,8 +19,8 @@ public:
 	ListDB() : head(nullptr) {}
 	~ListDB();
 	void linkedList_push(const School&);
-	const School& linkedList_find(std::string_view) const;
-	void linkedList_show() const;
+	const School& linkedList_find(std::string_view, std::string_view value) const;
+	std::vector<School> linkedList_find_all(std::string_view key, std::string_view value) const;
 	void linkedList_remove(std::string_view key);
 	void linkedList_update(std::string_view key, const School& newSchool);
 };

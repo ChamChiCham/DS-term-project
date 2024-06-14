@@ -53,13 +53,15 @@ void _Process_SELECT(DB& db)
 	std::string& key = _str[0];
 	std::string& value = _str[2];
 
-
 	for (const auto& type : SCHOOL_TYPE) {
 		if (type == key) {
 			// TODO: 여기에 SELECT 함수를 추가합니다.
 			try {
-				const School& school = db.linkedList_find(value);
-				school.show();
+				std::vector<School> schools = db.linkedList_find_all(key, value);
+				for (const auto& school : schools) {
+					school.show();
+					std::cout << std::endl;
+				}
 			}
 			catch (const std::exception& e) {
 				std::cerr << e.what() << std::endl;
@@ -91,7 +93,7 @@ void _Process_INSERT(DB& db)
 	}
 
 	if (tokens.size() < SCHOOL_SIZE + 1 || tokens[tokens.size() - SCHOOL_SIZE - 1] != "VALUES") {
-		throw std::format("{}: INSERT 문법이 잘못되었습니다.", _line);
+		throw std::format("{}: 잘못된 입력입니다.", _line);
 	}
 
 	School new_school;
@@ -133,15 +135,17 @@ void _Process_UPDATE(DB& db)
 		if (type == where_key) {
 			// TODO: 여기에 업데이트 함수를 추가합니다.
 			try {
-				School new_school = db.linkedList_find(where_value);
-				for (int i = 0; i < SCHOOL_SIZE; ++i) {
-					if (SCHOOL_TYPE[i] == targ_key) {
-						new_school.data[i] = targ_value;
-						db.linkedList_update(where_value, new_school);
-						std::cout << "학교 정보가 업데이트되었습니다." << std::endl;
-						return;
+				std::vector<School> schools = db.linkedList_find_all(where_key, where_value);
+				for (auto& school : schools) {
+					for (int i = 0; i < SCHOOL_SIZE; ++i) {
+						if (SCHOOL_TYPE[i] == targ_key) {
+							school.data[i] = targ_value;
+						}
 					}
+					db.linkedList_update(where_value, school);
 				}
+				std::cout << "학교 정보가 업데이트되었습니다." << std::endl;
+				return;
 			}
 			catch (const std::exception& e) {
 				std::cerr << e.what() << std::endl;
@@ -154,8 +158,6 @@ void _Process_UPDATE(DB& db)
 		}
 	}
 	throw std::format("{}: 찾으려는 key가 발견되지 않았습니다.", where_key);
-
-
 }
 
 //
