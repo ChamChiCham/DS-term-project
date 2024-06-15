@@ -133,6 +133,7 @@
     <ClCompile Include="src\ListDB.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MapDB.cpp" />
+    <ClCompile Include="src\timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\define.h" />

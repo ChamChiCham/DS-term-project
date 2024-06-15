@@ -1,6 +1,6 @@
 프로그램 사용 방법
 
-- Database 종류 설정
+- 처음 Database 종류 설정
 List로 구현된 Database 사용 시 1
 Map으로 구현된 Database 사용 시 2
 
@@ -35,4 +35,9 @@ key2에 value2가 일치하는 정보에서 key1를 value1로 수정합니다.
 
 4. DELETE key = value
 입력한 key의 value가 일치하는 정보를 삭제합니다.
+
+5. QUIT
+프로그램을 종료합니다.
+
+
 

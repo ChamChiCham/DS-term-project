@@ -27,7 +27,7 @@ void read_file(DB& db)
 			new_school.data[i] = data;
 		}
 
-		db.linkedList_push(new_school);
+		db.insert(new_school);
 	}
 	std::println("엑셀 파일 읽기 완료.");
 }
@@ -38,7 +38,6 @@ void read_file(DB& db)
 template <class DB>
 void _Process_SELECT(DB& db)
 {
-	Timer timer;
 	std::string _line;
 	std::getline(std::cin, _line);
 	std::istringstream _iss{ _line };
@@ -55,29 +54,14 @@ void _Process_SELECT(DB& db)
 
 	std::string& key = _str[0];
 	std::string& value = _str[2];
-	// 여기 수정
-	for (const auto& type : SCHOOL_TYPE) {
-		if (type == key) {
-			// TODO: 여기에 SELECT 함수를 추가합니다.
-			try {
-				std::vector<School> schools = db.linkedList_find_all(key, value);
-				for (const auto& school : schools) {
-					school.show();
-					std::cout << std::endl;
-				}
-			}
-			catch (const std::exception& e) {
-				std::cerr << e.what() << std::endl;
-			}
-			std::cout << "SELECT 실행 시간: " << timer.elapsed() << "초" << std::endl;
-			return;
-
-			// 임시 출력
-			//std::println("key 발견");
-			//return;
+	
+	for (int i{}; i < SCHOOL_SIZE; ++i) {
+		if (SCHOOL_TYPE[i] == key) {
+			db.select(i, value);
 			return;
 		}
 	}
+
 	throw std::format("{}: key가 발견되지 않았습니다.", key);
 }
 
@@ -86,6 +70,7 @@ void _Process_SELECT(DB& db)
 //
 template <class DB>
 void _Process_INSERT(DB& db)
+{
 	std::string _line;
 	std::getline(std::cin, _line);
 	std::istringstream _iss{ _line };
@@ -126,27 +111,29 @@ void _Process_INSERT(DB& db)
 	}
 	
 	// compare key and values
+	School school;
+
 	for (int i{}; i < _kc; ++i) {
 		std::string& key = _kstr[i];
 		std::string& value = _vstr[i];
-		School school;
 
 		bool _check = false;
-
 		for (int j{}; j < SCHOOL_SIZE; ++j) {
 			if (SCHOOL_TYPE[j] == key) {
 				_check = true;
-				school[j] = key;
+				school[j] = value;
 			}
 		}
 		if (not _check) {
 			throw std::format("{}: key가 발견되지 않았습니다.", key);
 		}
 
-		// TODO: 여기에 INSERT 추가.
-
 	}
 
+	timer.reset();
+	db.insert(school);
+	timer.elapsed();
+	timer.show();
 }
 
 
@@ -176,35 +163,28 @@ void _Process_UPDATE(DB& db)
 
 	std::string& where_key = _str[4];
 	std::string& where_value = _str[6];
-	for (const auto& type : SCHOOL_TYPE) {
-		if (type == where_key) {
-			// TODO: 여기에 업데이트 함수를 추가합니다.
-			try {
-				std::vector<School> schools = db.linkedList_find_all(where_key, where_value);
-				for (auto& school : schools) {
-					for (int i = 0; i < SCHOOL_SIZE; ++i) {
-						if (SCHOOL_TYPE[i] == targ_key) {
-							school.data[i] = targ_value;
-						}
-					}
-					db.linkedList_update(where_value, school);
-				}
-				std::cout << "학교 정보가 업데이트되었습니다." << std::endl;
-				std::cout << "UPDATE 실행 시간: " << timer.elapsed() << "초" << std::endl;
-				return;
-			}
-			catch (const std::exception& e) {
-				std::cerr << e.what() << std::endl;
-			}
-			return;
-
-			// 임시 출력
-			//std::println("where_key 발견");
-			//return;
-			return;
+	
+	int targ_key_index{ -1 }, where_key_index{ -1 };
+	for (int i{}; i < SCHOOL_SIZE; ++i) {
+		if (SCHOOL_TYPE[i] == targ_key) {
+			targ_key_index = i;
+		}
+		if (SCHOOL_TYPE[i] == where_key) {
+			where_key_index = i;
 		}
 	}
-	throw std::format("{}: 찾으려는 key가 발견되지 않았습니다.", where_key);
+
+	if (-1 == targ_key_index) {
+		throw std::format("{}: 찾으려는 key가 발견되지 않았습니다.", targ_key);
+	}
+	if (-1 == where_key_index) {
+		throw std::format("{}: 찾으려는 key가 발견되지 않았습니다.", where_key);
+	}
+
+	timer.reset();
+	db.update(targ_key_index, targ_value, where_key_index, where_value);
+	timer.elapsed();
+	timer.show();
 }
 
 //
@@ -231,21 +211,13 @@ void _Process_DELETE(DB& db)
 	std::string& key = _str[0];
 	std::string& value = _str[2];
 
-	for (const auto& type : SCHOOL_TYPE) {
-		if (type == key) {
-			// TODO: 여기에 삭제 함수를 추가합니다.
-			try {
-				db.linkedList_remove(value);
-				std::cout << "학교가 삭제되었습니다." << std::endl;
-				std::cout << "DELETE 실행 시간: " << timer.elapsed() << "초" << std::endl;
-			}
-			catch (const std::exception& e) {
-				std::cerr << e.what() << std::endl;
-			}
-			return;
-			// 임시 출력
-			//std::println("key 발견");
-			//return;
+
+	for (int i{}; i < SCHOOL_SIZE; ++i) {
+		if (SCHOOL_TYPE[i] == key) {
+			timer.reset();
+			db.remove(i, value);
+			timer.elapsed();
+			timer.show();
 			return;
 		}
 	}
@@ -254,7 +226,7 @@ void _Process_DELETE(DB& db)
 
 
 template <class DB>
-void process_input(DB& db)
+bool process_input(DB& db)
 {
 	std::string in;
 
@@ -267,6 +239,7 @@ void process_input(DB& db)
 		else if (in == "INSERT") { _Process_INSERT(db); }
 		else if (in == "UPDATE") { _Process_UPDATE(db); }
 		else if (in == "DELETE") { _Process_DELETE(db); }
+		else if (in == "QUIT")	 { return false; }
 		else {
 			std::println("{}: 잘못된 명령어입니다.", in);
 			std::cin.clear();
@@ -278,4 +251,5 @@ void process_input(DB& db)
 		std::cerr << e << std::endl;
 	}
 	std::cout << std::endl;
+	return true;
 }

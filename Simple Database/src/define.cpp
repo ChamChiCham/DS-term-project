@@ -5,9 +5,11 @@
 
 void School::show() const
 {
+	std::println("==============");
 	for (const auto& a : data) {
 		std::println("{}", a);
 	}
+	std::println("==============");
 }
 
 std::string& School::operator[](const size_t idx)
