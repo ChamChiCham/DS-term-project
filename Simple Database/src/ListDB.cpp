@@ -36,40 +36,81 @@ void ListDB::linkedList_push(const School& school)
 	head = newNode;
 }
 
-const School& ListDB::linkedList_find(std::string_view key) const
+const School& ListDB::linkedList_find(std::string_view key, std::string_view value) const
 {
+    Node* current = head;
+    while (current != nullptr) {
+        for (int i = 0; i < SCHOOL_SIZE; ++i) {
+            if (SCHOOL_TYPE[i] == key && current->school.data[i] == value) {
+                return current->school;
+            }
+        }
+        current = current->next;
+    }
+    throw std::runtime_error("학교를 찾을 수 없습니다.");
+}
+
+std::vector<School> ListDB::linkedList_find_all(std::string_view key, std::string_view value) const {
+	std::vector<School> result;
 	Node* current = head;
 	while (current != nullptr) {
-		if (current->school.data[2] == key) {
-			return current->school;
+		for (int i = 0; i < SCHOOL_SIZE; ++i) {
+			if (SCHOOL_TYPE[i] == key && current->school.data[i] == value) {
+				result.push_back(current->school);
+				break;
+			}
 		}
 		current = current->next;
 	}
-	throw std::runtime_error("학교를 찾을 수 없습니다.");
-}
-
-void ListDB::linkedList_show() const {
-	Node* current = head;
-	while (current != nullptr) {
-		current->school.show();
-		current = current->next;
+	if (result.empty()) {
+		throw std::runtime_error("학교를 찾을 수 없습니다.");
 	}
+	return result;
 }
 
 void ListDB::linkedList_remove(std::string_view key) {
     Node* current = head;
     Node* prev = nullptr;
     while (current != nullptr) {
-        if (current->school.data[2] == key) {
+        bool match = false;
+        for (int i = 0; i < 16; i++) {
+            if (current->school.data[i] == key) {
+                match = true;
+                break;
+            }
+        }
+        if (match) {
+			Node* temp = current;
             if (prev == nullptr) {
                 head = current->next;
             } else {
                 prev->next = current->next;
             }
-            delete current;
-            return;
-        }
-        prev = current;
-        current = current->next;
+            current = current->next;
+            delete temp;
+		}
+		else {
+			prev = current;
+			current = current->next;
+		}
     }
+}
+
+void ListDB::linkedList_update(std::string_view key, const School& newSchool) {
+	Node* current = head;
+	while (current != nullptr) {
+		bool match = false;
+		for (int i = 0; i < SCHOOL_SIZE; ++i) {
+			if (current->school.data[i] == key) {
+				match = true;
+				break;
+			}
+		}
+		if (match) {
+			current->school = newSchool;
+			return;
+		}
+		current = current->next;
+	}
+	throw std::runtime_error("학교를 찾을 수 없습니다.");
 }

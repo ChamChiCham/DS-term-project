@@ -39,5 +39,8 @@
     <ClInclude Include="src\ProcessFunc.h">
       <Filter>ProcessFunc</Filter>
     </ClInclude>
+    <ClInclude Include="src\timer.h">
+      <Filter>ProcessFunc</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
