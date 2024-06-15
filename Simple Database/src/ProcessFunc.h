@@ -54,13 +54,10 @@ void _Process_SELECT(DB& db)
 	std::string& value = _str[2];
 
 
-	for (const auto& type : SCHOOL_TYPE) {
-		if (type == key) {
-			// TODO: 여기에 SELECT 함수를 추가합니다.
+	for (int i{}; i < SCHOOL_SIZE; ++i) {
+		if (SCHOOL_TYPE[i] == key) {
+			// TODO: UPDATE 추가
 
-
-			// 임시 출력
-			std::println("key 발견");
 			return;
 		}
 	}
@@ -73,7 +70,67 @@ void _Process_SELECT(DB& db)
 template <class DB>
 void _Process_INSERT(DB& db)
 {
+	std::string _line;
+	std::getline(std::cin, _line);
+	std::istringstream _iss{ _line };
+	std::string _kstr[SCHOOL_SIZE];
+	std::string _vstr[SCHOOL_SIZE];
+	std::string _str;
+
+	unsigned char _kc{}, _vc{};
 	
+	// read keys
+	while (true) {	
+		if (not (_iss >> _str)) {
+			throw std::format("{}: 잘못된 입력입니다.", _line);
+		}
+
+		if ("VALUES" == _str) {
+			break;
+		}
+
+		if (SCHOOL_SIZE == _kc) {
+			throw std::format("{}: key가 너무 많습니다.", _line);
+		}
+
+		_kstr[_kc++] = _str;
+	}
+	
+	// read values
+	while (_iss >> _str) {
+		if (SCHOOL_SIZE == _vc) {
+			throw std::format("{}: value가 너무 많습니다.", _line);
+		}
+
+		_vstr[_vc++] = _str;
+	}
+
+	if (_kc != _vc) {
+		throw std::format("{}: key와 value의 쌍이 맞지 않습니다.", _line);
+	}
+	
+	// compare key and values
+	for (int i{}; i < _kc; ++i) {
+		std::string& key = _kstr[i];
+		std::string& value = _vstr[i];
+		School school;
+
+		bool _check = false;
+
+		for (int j{}; j < SCHOOL_SIZE; ++j) {
+			if (SCHOOL_TYPE[j] == key) {
+				_check = true;
+				school[j] = key;
+			}
+		}
+		if (not _check) {
+			throw std::format("{}: key가 발견되지 않았습니다.", key);
+		}
+
+		// TODO: 여기에 INSERT 추가.
+
+	}
+
 }
 
 //
@@ -102,13 +159,10 @@ void _Process_UPDATE(DB& db)
 	std::string& where_key = _str[4];
 	std::string& where_value = _str[6];
 
-	for (const auto& type : SCHOOL_TYPE) {
-		if (type == where_key) {
-			// TODO: 여기에 삭제 함수를 추가합니다.
+	for (int i{}; i < SCHOOL_SIZE; ++i) {
+		if (SCHOOL_TYPE[i] == where_key) {
+			// TODO: UPDATE 추가.
 
-
-			// 임시 출력
-			std::println("where_key 발견");
 			return;
 		}
 	}
@@ -141,14 +195,9 @@ void _Process_DELETE(DB& db)
 	std::string& value = _str[2];
 
 	
-	for (const auto& type : SCHOOL_TYPE) {
-		if (type == key) {
-			// TODO: 여기에 삭제 함수를 추가합니다.
-
-
-			// 임시 출력
-			std::println("key 발견");
-			return;
+	for (int i{}; i < SCHOOL_SIZE; ++i) {
+		if (SCHOOL_TYPE[i] == key) {
+			// TODO: DELETE 추가.
 		}
 	}
 	throw std::format("{}: key가 발견되지 않았습니다.", key);
