@@ -4,19 +4,19 @@
     <Filter Include="ListDB">
       <UniqueIdentifier>{ef754d4e-7309-4a4e-985e-3575a8301351}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MapDB">
-      <UniqueIdentifier>{75dd4369-6941-44b8-a824-c352ef43419f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Define">
       <UniqueIdentifier>{f0c1b64e-fd54-4f74-a69d-e2f34e681454}</UniqueIdentifier>
     </Filter>
     <Filter Include="ProcessFunc">
       <UniqueIdentifier>{2e16652d-2e00-442f-b3a9-f2026e2430a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BSTDB">
+      <UniqueIdentifier>{75dd4369-6941-44b8-a824-c352ef43419f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\MapDB.cpp">
-      <Filter>MapDB</Filter>
+    <ClCompile Include="src\BSTDB.cpp">
+      <Filter>BSTDB</Filter>
     </ClCompile>
     <ClCompile Include="src\ListDB.cpp">
       <Filter>ListDB</Filter>
@@ -25,10 +25,11 @@
       <Filter>Define</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\timer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\MapDB.h">
-      <Filter>MapDB</Filter>
+    <ClInclude Include="src\BSTDB.h">
+      <Filter>BSTDB</Filter>
     </ClInclude>
     <ClInclude Include="src\ListDB.h">
       <Filter>ListDB</Filter>

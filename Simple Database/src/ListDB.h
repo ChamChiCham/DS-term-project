@@ -18,10 +18,9 @@ public:
 	
 	void select(size_t, const std::string&) const;
 	
-	// REMOVE
+	// DELETE
 	void remove(const size_t, const std::string&);
 	
-	// UPDATE
 	void update(const size_t, const std::string&, const size_t, const std::string&);
 };
 

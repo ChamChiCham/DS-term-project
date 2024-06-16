@@ -4,6 +4,7 @@
 
 constexpr int SCHOOL_SIZE{ 16 };
 constexpr const char* FILE_NAME{ "data.csv" };
+constexpr size_t BST_KEY{ 2 };
 
 constexpr const char* SCHOOL_TYPE[SCHOOL_SIZE]{
 	"학교구분",

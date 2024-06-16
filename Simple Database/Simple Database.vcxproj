@@ -132,13 +132,13 @@
     <ClCompile Include="src\define.cpp" />
     <ClCompile Include="src\ListDB.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\MapDB.cpp" />
+    <ClCompile Include="src\BSTDB.cpp" />
     <ClCompile Include="src\timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\define.h" />
     <ClInclude Include="src\ListDB.h" />
-    <ClInclude Include="src\MapDB.h" />
+    <ClInclude Include="src\BSTDB.h" />
     <ClInclude Include="src\ProcessFunc.h" />
     <ClInclude Include="src\timer.h" />
   </ItemGroup>

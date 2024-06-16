@@ -1,16 +1,19 @@
 #include <iostream>
 #include "define.h"
 #include "ListDB.h"
-#include "MapDB.h"
+#include "BSTDB.h"
 #include "ProcessFunc.h"
 
 int main()
 {
+    std::println("¿¢¼¿ ÆÄÀÏ ÀÐ±â¸¦ ½ÃÀÛÇÕ´Ï´Ù...");
     read_file(listDB);
+    read_file(bstDB);
+    std::println("¿¢¼¿ ÆÄÀÏ ÀÐ±â ¿Ï·á.");
     
     int value;
     while (true) {
-        std::println("Select Database Type (LinkedList: 1 | priority queue: 2) ");
+        std::println("Select Database Type (LinkedList: 1 | Tree: 2) ");
         std::print(">> ");
         std::cin >> value;
         if (1 == value || 2 == value) {
@@ -27,6 +30,6 @@ int main()
         while (process_input(listDB));
     }
     else {
-        while (process_input(mapDB));
+        while (process_input(bstDB));
     }
 }

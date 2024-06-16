@@ -16,7 +16,6 @@ void read_file(DB& db)
 		while (true);
 	}
 
-	std::println("엑셀 파일 읽기를 시작합니다...");
 	std::string line;
 	while (std::getline(file, line)) {
 		std::stringstream ss{ line };
@@ -29,7 +28,6 @@ void read_file(DB& db)
 
 		db.insert(new_school);
 	}
-	std::println("엑셀 파일 읽기 완료.");
 }
 
 // 
@@ -143,7 +141,6 @@ void _Process_INSERT(DB& db)
 template <class DB>
 void _Process_UPDATE(DB& db)
 {
-	Timer timer;
 	std::string _line;
 	std::getline(std::cin, _line);
 	std::istringstream _iss{ _line };
@@ -193,7 +190,6 @@ void _Process_UPDATE(DB& db)
 template <class DB>
 void _Process_DELETE(DB& db)
 {
-	Timer timer;
 	std::string _line;
 	std::getline(std::cin, _line);
 	std::istringstream _iss{ _line };
