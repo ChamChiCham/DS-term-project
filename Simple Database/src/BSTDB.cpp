@@ -57,7 +57,7 @@ void BSTDB::select(const size_t idx, const std::string& value) const
 	timer.reset();
 	auto result = search(root, idx, value);
 	timer.elapsed();
-
+	if (not result) { return; }
 	result->data.show();
 	timer.show();
 }
@@ -89,12 +89,12 @@ TreeNode* BSTDB::remove_rec(TreeNode* root, const size_t idx, const std::string&
 	}
 
 	else {
-		if (root->left == NULL) {
+		if (root->left == nullptr) {
 			TreeNode* temp = root->right;
 			free(root);
 			return temp;
 		}
-		else if (root->right == NULL) {
+		else if (root->right == nullptr) {
 			TreeNode* temp = root->left;
 			free(root);
 			return temp;
@@ -111,9 +111,10 @@ TreeNode* BSTDB::remove_rec(TreeNode* root, const size_t idx, const std::string&
 void BSTDB::update(const size_t targ_idx, const std::string& targ_value, const size_t where_idx, const std::string& where_value)
 {
 	timer.reset();
-	auto result = search(root, targ_idx, targ_value);
+	auto result = search(root, where_idx, where_value);
 	timer.elapsed();
 
-	result->data[where_idx] = where_value;
+	if (not result) { return; }
+	result->data[targ_idx] = targ_value;
 	timer.show();
 }
